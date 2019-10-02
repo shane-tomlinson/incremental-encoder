@@ -1,7 +1,7 @@
 {
-  "name": "front-encoder",
+  "name": "incremental-encoder",
   "version": "0.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MPL 2.0",
   "dependencies": {},
   "devDependencies": {
