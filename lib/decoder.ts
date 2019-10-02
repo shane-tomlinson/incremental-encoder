@@ -3,6 +3,9 @@ export default class FrontDecoder {
     return encoded.reduce((result: string[], current: string, index: number) => {
       const [numSharedStr, suffix] = current.split(" ");
       const numShared = parseInt(numSharedStr, 10);
+      if (isNaN(numShared)) {
+        throw new Error(`Invalid line: ${current}`);
+      }
       if (numShared === 0) {
         return [...result, suffix];
       } else {
