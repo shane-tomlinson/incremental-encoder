@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 Object.defineProperty(exports, "__esModule", { value: true });
+const constants_1 = require("./constants");
 class FrontEncoder {
     encode(dictionary) {
         return dictionary
@@ -11,12 +12,15 @@ class FrontEncoder {
             .sort()
             .reduce((result, entry, index, dictionary) => {
             if (index === 0) {
-                result.push(`0 ${entry}`);
+                result.push(`0${entry}`);
             }
             else {
                 const prev = dictionary[index - 1];
                 const commonPrefix = this.findCommonPrefix(prev, entry);
-                result.push(`${commonPrefix.length} ${entry.slice(commonPrefix.length)}`);
+                if (commonPrefix.length >= constants_1.RADIX) {
+                    throw new Error(`Cannot encode ${entry}, ${constants_1.RADIX} or more characters are shared with the previous word`);
+                }
+                result.push(`${commonPrefix.length.toString(constants_1.RADIX)}${entry.slice(commonPrefix.length)}`);
             }
             return result;
         }, []);

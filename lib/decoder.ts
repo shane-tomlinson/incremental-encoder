@@ -2,15 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { RADIX } from './constants';
+
 export default class FrontDecoder {
   decode(encoded: string[]): string[] {
     return encoded.reduce(
       (result: string[], current: string, index: number) => {
-        const [numSharedStr, suffix] = current.split(" ");
-        const numShared = parseInt(numSharedStr, 10);
+        const numSharedStr = current.charAt(0);
+        const numShared = parseInt(numSharedStr, RADIX);
         if (isNaN(numShared)) {
           throw new Error(`Invalid line: ${current}`);
         }
+        if (index === 0 && numShared !== 0) {
+          throw new Error(`Invalid line: ${current}`);
+        }
+        const suffix = current.slice(1);
         if (numShared === 0) {
           result.push(suffix);
         } else {

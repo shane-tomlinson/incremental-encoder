@@ -8,15 +8,12 @@ const decoder_1 = require("../lib/decoder");
 describe("decoder", () => {
     const decoder = new decoder_1.default();
     it("decodes the list", () => {
-        chai_1.assert.deepEqual(decoder.decode(["0 entry", "5 2", "6 1", "0 out_of_order"]), ["entry", "entry2", "entry21", "out_of_order"]);
+        chai_1.assert.deepEqual(decoder.decode(["0entry", "52", "61", "0out_of_order"]), ["entry", "entry2", "entry21", "out_of_order"]);
     });
     it('throws on invalid input', () => {
         chai_1.assert.throws(() => {
-            decoder.decode(['invalid prefix']);
-        }, 'Invalid line: invalid prefix');
-        chai_1.assert.throws(() => {
-            decoder.decode(['lacksprefix']);
-        }, 'Invalid line: lacksprefix');
+            decoder.decode(['1first_entry_must_start_with_0']);
+        }, 'Invalid line: 1first_entry_must_start_with_0');
         chai_1.assert.throws(() => {
             decoder.decode(['']);
         }, 'Invalid line: ');

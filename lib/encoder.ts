@@ -2,6 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import { RADIX } from './constants';
+
 export default class FrontEncoder {
   encode(dictionary: string[]) {
     return dictionary
@@ -16,12 +18,15 @@ export default class FrontEncoder {
           dictionary: string[]
         ) => {
           if (index === 0) {
-            result.push(`0 ${entry}`);
+            result.push(`0${entry}`);
           } else {
             const prev: string = dictionary[index - 1];
             const commonPrefix = this.findCommonPrefix(prev, entry);
+            if (commonPrefix.length >= RADIX) {
+              throw new Error(`Cannot encode ${entry}, ${RADIX} or more characters are shared with the previous word`);
+            }
             result.push(
-              `${commonPrefix.length} ${entry.slice(commonPrefix.length)}`
+              `${commonPrefix.length.toString(RADIX)}${entry.slice(commonPrefix.length)}`
             );
           }
           return result;

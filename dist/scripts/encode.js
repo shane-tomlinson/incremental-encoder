@@ -15,10 +15,7 @@ if (!inputPath) {
 const words = fs
     .readFileSync(inputPath)
     .toString("utf8")
-    .split(/\s/g)
-    .map(line => line.trim())
-    .filter(line => line.length)
-    .sort();
+    .split(/\s+/g);
 const encoded = encoder.encode(words);
 console.log(encoded.join("\n"));
 //# sourceMappingURL=encode.js.map
